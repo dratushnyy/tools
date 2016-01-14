@@ -1,0 +1,28 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+  config.vm.hostname = "cobbler"
+  config.vm.define "cobbler" do |conf|
+    conf.vm.box = "centos/7"
+    conf.vm.box_check_update = false
+    conf.vm.provider :virtualbox do |vbox|
+        vbox.name = "cobbler"
+        vbox.memory = 2048
+        vbox.cpus = 1
+    end
+  end
+  config.vm.network "private_network", ip: "5.5.5.2",
+    virtualbox__intnet: "mgmnt",
+    nic_type: "virtio" # For VLAN support
+
+  config.vm.network "forwarded_port", guest:80, host: 8000
+  config.vm.network "forwarded_port", guest:443, host: 8443
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "cobbler_playbook.yaml"
+    ansible.sudo = true
+    ansible.verbose = true
+  end
+
+end
