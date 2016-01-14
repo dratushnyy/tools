@@ -12,8 +12,8 @@ Observer
 * Install vagrant hosts plugin (vagrant plugin install vagrant-hostmanager)
 * vagrant up
     
-## Create Cobbler systems
-        cd ~
+## Create Cobbler systems (CLI)
+        vagrant ssh cobbler
         wget <path_to_image>
         sudmkdir -p /mnt/<image_folder_name>
         mount -t iso9660 -o loop,ro /<path_to_image> /mnt/<image_folder_name>
