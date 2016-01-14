@@ -21,12 +21,6 @@ Observer
 ### Images
 [CentOs 7 minimal iso] (http://isoredirect.centos.org/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1511.iso)
 
-wget http://mirror.cov.ukservers.com/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1511.iso
-sudo mkdir -p /mnt/cetnos7_minimal
-sudo mount -t iso9660 -o loop,ro /home/vagrant/CentOS-7-x86_64-Minimal-1511.iso /mnt/cetnos7_minimal/
-
-sudo ls -la /mnt/cetnos7_minimal/
-sudo cobbler import --name=centos-7 --arch=x86_64 --path=/mnt/cetnos7_minimal/
 
 
 ### How to create box from VirtualBox image
