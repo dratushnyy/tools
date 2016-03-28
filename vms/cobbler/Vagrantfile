@@ -1,15 +1,17 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+VAGRANT_API_VERSION = 2
 
-Vagrant.configure(2) do |config|
+Vagrant.configure(VAGRANT_API_VERSION) do |config|
   config.vm.hostname = "cobbler"
-  config.vm.define "cobbler" do |conf|
-    conf.vm.box = "centos/7"
-    conf.vm.box_check_update = false
-    conf.vm.provider :virtualbox do |vbox|
-        vbox.name = "cobbler"
-        vbox.memory = 2048
-        vbox.cpus = 1
+  config.vm.define "cobbler" do |cfg|
+    cfg.vm.box = "centos/7"
+    cfg.vm.box_check_update = false
+    
+    conf.vm.provider :virtualbox do |vm|
+        vm.name = "cobbler"
+        vm.memory = 2048
+        vm.cpus = 1
     end
   end
   config.vm.network "private_network", ip: "5.5.5.2",
