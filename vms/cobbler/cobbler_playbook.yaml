@@ -42,5 +42,5 @@
       shell: cobbler get-loaders
 
     - name: Cobbler sync and restart
-      shell: service cobblerd restart && cobbler sync
+      shell: cobbler sync
 
