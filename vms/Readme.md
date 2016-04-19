@@ -17,7 +17,7 @@ Observer
 ## Create Cobbler systems (CLI)
         vagrant ssh cobbler
         wget <path_to_image>
-        sudmkdir -p /mnt/<image_folder_name>
+        sudo mkdir -p /mnt/<image_folder_name>
         mount -t iso9660 -o loop,ro /<path_to_image> /mnt/<image_folder_name>
         cobber import --name=<system_name_for_cobbler> --arch=<x86_64|x86_32> --path=/mnt/<image_folder_name>
     
