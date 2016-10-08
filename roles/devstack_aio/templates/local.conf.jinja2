@@ -7,7 +7,7 @@ SWIFT_REPLICAS=1
 SWIFT_HASH=nova
 IDENTITY_API_VERSION={{IDENTITY_API_VERSION}}
 OS_IDENTITY_API_VERSION={{OS_IDENTITY_API_VERSION}}
-LOGFILE=/opt/devstack/stack.sh.log
+LOGFILE=/home/{{ ansible_ssh_user }}/stack.sh.log
 
 {% for service in DISABLED_SERICES%}
 disable_service {{ service }}
