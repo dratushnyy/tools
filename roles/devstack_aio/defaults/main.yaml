@@ -3,3 +3,9 @@ OS_IDENTITY_API_VERSION: 2
 ENABLED_SERIVES: ["q-svc", "q-agt", "q-dhcp", "q-l3", "q-meta", "horizon"]
 DISABLED_SERICES: ["n-net", "tempest"]
 PLUGINS: [] #list of dicts
+
+#SWIFT SERVICES are:
+#s-proxy s-object s-container s-account swift3
+
+#HEAT SERVICES are:
+#heat h-api h-api-cfn h-api-cw h-eng

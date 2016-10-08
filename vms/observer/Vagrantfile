@@ -18,10 +18,6 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
 
   #Net boot
   config.vm.network "private_network", type:"dhcp",
-    virtualbox__intnet: "mgmnt",
+    virtualbox__intnet: "mgmt",
     nic_type: "virtio"   # For VLAN support
-
-   config.vm.provider "virtualbox" do |vb|
-     vb.memory = "1024"
-   end
 end

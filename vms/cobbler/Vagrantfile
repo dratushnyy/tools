@@ -8,22 +8,20 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
     cfg.vm.box = "centos/7"
     cfg.vm.box_check_update = false
     
-    conf.vm.provider :virtualbox do |vm|
+    config.vm.provider :virtualbox do |vm|
         vm.name = "cobbler"
         vm.memory = 2048
         vm.cpus = 1
     end
   end
-  config.vm.network "private_network", ip: "5.5.5.2",
-    virtualbox__intnet: "mgmnt"
 
-  config.vm.network "forwarded_port", guest:80, host: 8000
-  config.vm.network "forwarded_port", guest:443, host: 8443
+  config.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)"
+
+  config.vm.network "private_network", ip: "1.1.1.2",
+    virtualbox__intnet: "mgmt"
 
   config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "cobbler_playbook.yaml"
-    ansible.sudo = true
-    ansible.verbose = true
+    ansible.playbook = "../../cobbler.yaml"
   end
 
 end

@@ -1,0 +1,21 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANT_API_VERSION = 2
+
+Vagrant.configure(VAGRANT_API_VERSION) do |config|
+  config.vm.hostname = "devstack_aio"
+  config.vm.define "devstack_aio" do |cfg|
+    cfg.vm.box = "ubuntu/trusty64"
+
+    cfg.vm.provider :virtualbox do |vm|
+        vm.name = "devstack_aio"
+        vm.memory = 8096
+        vm.cpus = 2
+    end
+  end
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "../../devstack_aio.yaml"
+  end
+
+end

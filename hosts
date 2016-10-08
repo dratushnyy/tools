@@ -1,2 +1,2 @@
-[vms]
+[devstack]
 vm1 ansible_ssh_host=192.168.230.137 ansible_ssh_user=ubuntu ansible_ssh_pass=ubuntu ansible_become_pass=ubuntu ansible_become_user=ubuntu

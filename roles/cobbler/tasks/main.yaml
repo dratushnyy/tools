@@ -2,11 +2,12 @@
 - name: "Disabling SELinux"
   action: selinux policy=targeted state=permissive
 
+- name: "Install EPEL release"
+  yum: name=epel-release
+
 - name: "Install packages"
   yum: pkg={{ item }}
   with_items:
-  - epel-release
-  - vim
   - ntp
   - dhcp
   - yum-utils
@@ -18,7 +19,6 @@
   - PyYAML
   - Django
 
-
 - name: "Configure xinetd"
   lineinfile: dest=/etc/xinetd.d/tftp regexp="disable.*= yes" line="disable                 = no"
 
@@ -29,12 +29,12 @@
     line: "{{ item.line }}"
     state: present
   with_items:
-      - {regex: "next_server: 127.0.0.1", line: "next_server: 5.5.5.2"}
-      - {regex: "server: 5.5.5.2", line: "next_server: 5.5.5.2"}
+      - {regex: "next_server: 127.0.0.1", line: "next_server: 1.1.1.2"}
+      - {regex: "server: 1.1.1.2", line: "next_server: 1.1.1.2"}
       - {regex: "manage_dhcp: 0", line: "manage_dhcp: 1"}
 
 - name: "Copy DHCP template"
-  copy: src=./dhcp.template.jinja2 dest=/etc/cobbler/
+  template: src=dhcp.template.jinja2 dest=/etc/cobbler/dhcp.template
 
 - name: "Starting services"
   service: name={{ item }} state=started enabled=yes
