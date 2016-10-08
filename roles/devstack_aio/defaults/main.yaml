@@ -1,0 +1,5 @@
+IDENTITY_API_VERSION: 2.0
+OS_IDENTITY_API_VERSION: 2
+ENABLED_SERIVES: ["q-svc", "q-agt", "q-dhcp", "q-l3", "q-meta", "horizon"]
+DISABLED_SERICES: ["n-net", "tempest"]
+PLUGINS: [] #list of dicts

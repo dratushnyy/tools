@@ -1,0 +1,19 @@
+---
+- name: "Installing packages"
+  apt: name={{item}}
+  become: true
+  become_method: sudo
+  become_user: ubuntu
+  with_items:
+    - git
+    - python-dev
+    - openssl
+
+- name: "Clone devstack"
+  git: repo=https://git.openstack.org/openstack-dev/devstack dest=/home/{{ansible_ssh_user}}/devstack
+
+- name: "Create config"
+  template: src=local.conf.jinja2 dest=/home/{{ansible_ssh_user}}/devstack/local.fonf
+
+- name: "Run 'stack.sh'"
+  shell: "cd /home/{{ansible_ssh_user}}/devstack && ./stack.sh"

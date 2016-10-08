@@ -1,0 +1,9 @@
+---
+
+- hosts: vms
+  gather_facts: no
+  become: yes
+  become_method: sudo
+  roles:
+    - packages
+    - devstack_aio

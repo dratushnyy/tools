@@ -1,0 +1,20 @@
+[[local|localrc]]
+ADMIN_PASSWORD=nova
+DATABASE_PASSWORD=$ADMIN_PASSWORD
+RABBIT_PASSWORD=$ADMIN_PASSWORD
+SERVICE_PASSWORD=$ADMIN_PASSWORD
+SWIFT_REPLICAS=1
+SWIFT_HASH=nova
+
+IDENTITY_API_VERSION={{IDENTITY_API_VERSION}}
+OS_IDENTITY_API_VERSION={{OS_IDENTITY_API_VERSION}}
+{% for service in DISABLED_SERICES%}
+disable_service {{ service }}
+{% endfor %}
+{% for service in ENABLED_SERIVES%}
+enable_service {{ service }}
+{% endfor %}
+
+{% for plugin_name, plugin_url in PLUGINS %}
+enable_plugin {{ plugin_name }} {{ plugin_url }}
+{% endfor %}
