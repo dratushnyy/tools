@@ -4,12 +4,12 @@
 VAGRANT_API_VERSION = 2
 
 Vagrant.configure(VAGRANT_API_VERSION) do |config|
-  config.vm.hostname = "devstack_aio"
-  config.vm.define "devstack_aio" do |cfg|
+  config.vm.hostname = "devstackaio"
+  config.vm.define "devstackaio" do |cfg|
     cfg.vm.box = "ubuntu/trusty64"
 
     cfg.vm.provider :virtualbox do |vm|
-        vm.name = "devstack_aio"
+        vm.name = "devstackaio"
         vm.memory = 8096
         vm.cpus = 2
     end

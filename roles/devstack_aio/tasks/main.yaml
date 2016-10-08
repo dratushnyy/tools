@@ -1,19 +1,29 @@
 ---
+- name: "Run apt-get update"
+  apt: update_cache=true
+
+- name: "Installing ACL package"
+  apt: pkg=acl
+
 - name: "Installing packages"
   apt: name={{item}}
-  become: true
-  become_method: sudo
-  become_user: ubuntu
   with_items:
     - git
     - python-dev
     - openssl
 
-- name: "Clone devstack"
-  git: repo=https://git.openstack.org/openstack-dev/devstack dest=/home/{{ansible_ssh_user}}/devstack
+- name: "Clone devstack into /var/devstack"
+  git: repo=https://git.openstack.org/openstack-dev/devstack dest=/opt/devstack
 
-- name: "Create config"
-  template: src=local.conf.jinja2 dest=/home/{{ansible_ssh_user}}/devstack/local.fonf
+- name: "Create stack user"
+  shell: "/opt/devstack/tools/create-stack-user.sh"
+
+- name: "Create config for devstack"
+  template: src=local.conf.jinja2 dest=/opt/devstack/local.conf
+
+- name: "Chown devstack dir to user 'stack'"
+  file: path=/opt/devstack/ owner=stack group=stack
 
 - name: "Run 'stack.sh'"
-  shell: "cd /home/{{ansible_ssh_user}}/devstack && ./stack.sh"
+  shell: "/opt/devstack/stack.sh"
+  become_user: stack
