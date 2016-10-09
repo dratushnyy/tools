@@ -1,0 +1,26 @@
+---
+- name: "Downloading image"
+  get_url:
+    url: "{{item.url}}"
+    dest: "/var/{{item.system}}.iso"
+    checksum: "{{item.checksum}}"
+  with_items: "{{SYSTEMS}}"
+
+- name: "Creating mount point"
+  file: path="/mnt/{{item.system}}" state=directory
+  with_items: "{{SYSTEMS}}"
+
+- name: "Mount image"
+  mount:
+    name: "/mnt/{{item.system}}"
+    src: "/var/{{item.system}}.iso"
+    fstype: iso9660
+    opts: ro
+    state: mounted
+  with_items: "{{SYSTEMS}}"
+
+- name: "Import system to cobbler"
+  command: "cobbler import --name={{item.system}} --arch={{item.arch}} --path=/mnt/{{item.system}}"
+  with_items: "{{SYSTEMS}}"
+
+

@@ -14,6 +14,9 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
         vm.cpus = 2
     end
   end
+
+  config.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)"
+
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "../../devstack_aio.yaml"
   end
