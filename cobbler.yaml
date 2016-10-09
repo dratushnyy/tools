@@ -2,7 +2,6 @@
 - hosts: cobbler
   gather_facts: no
   become: yes
-  become_method: sudo
   roles:
     - cobbler
     - cobbler_distros
