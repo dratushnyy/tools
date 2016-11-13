@@ -1,0 +1,12 @@
+- name: "Get mysql container"
+  docker_image:
+    name: mysql:5.6
+    state: present
+
+
+- name: "Start mysql container"
+# Sinse there is a bug with ansble and docker, this is commented for now
+#  docker_container:
+#    name: mysql
+#    state: started
+  shell: "docker run -d --name=mysql mysql:5.6"

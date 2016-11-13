@@ -1,3 +1,7 @@
 .vagrant/
 *.retry
-hosts
+ansible/hosts
+*.log
+*.pyc
+.venv
+

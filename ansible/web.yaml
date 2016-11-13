@@ -1,0 +1,18 @@
+---
+- hosts: web
+  gather_facts: no
+  become: yes
+  roles:
+    - user
+    - docker
+    - nginx_container
+
+- hosts: db
+  gather_facts: no
+  become: yes
+  roles:
+    - user
+    - docker
+    - mysql_container
+
+
