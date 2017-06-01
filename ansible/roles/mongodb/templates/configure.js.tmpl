@@ -1,0 +1,12 @@
+use admin;
+user = db,getUser("{{mongo_admin_user}}")
+if (user == null) {
+    db.createUser({ user: "{{mongo_admin_user}}", pwd: "{{mongo_admin_pass}}", roles: [{ role: "userAdminAnyDatabase", db: "admin" }] });
+}
+
+use disforduck;
+user = db,getUser("{{mongo_admin_user}}")
+if (user == null) {
+    db.createUser({ user: "{{mongo_admin_user}}", pwd: "{{mongo_admin_pass}}", roles: [{ role: "dbOwner", db: "disforduck" }] });
+}
+

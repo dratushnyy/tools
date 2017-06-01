@@ -1,0 +1,101 @@
+---
+
+- name: "Adding mongodb repo"
+  template:
+    src: "./templates/mongodb-org-3.4.repo"
+    dest: "/etc/yum.repos.d/mongodb-org-3.4.repo"
+    owner: root
+    group: root
+  become: yes
+
+- name: "Install mongodb"
+  shell: "yum install -y mongodb-org"
+  become: yes
+
+- name: "Check mongod_port_t"
+  shell: "semanage port -l | grep mongod_port_t"
+  register: mongod_port_t
+  become: yes
+
+- name: "Allow mongodb port in selinux"
+  shell: "semanage port -a -t mongod_port_t -p tcp {{mongo_port}}"
+  when: mongod_port_t.stdout == ""
+  become: yes
+
+- name: "Disabling Transparent Huge Pages: 1"
+  template:
+    src: "./templates/disable-transparent-hugepages"
+    dest: "/etc/init.d/disable-transparent-hugepages"
+    owner: root
+    group: root
+    mode: 0755
+  become: yes
+
+- name: "Disabling Transparent Huge Pages: 2"
+  shell: "chkconfig --add disable-transparent-hugepages"
+  become: yes
+
+- name: "Disabling Transparent Huge Pages: 3"
+  file: path=/etc/tuned/no-thp state=directory
+  become: yes
+
+- name: "Disabling Transparent Huge Pages: 4"
+  template:
+    src: "./templates/tuned.conf"
+    dest: "/etc/tuned/no-thp/tuned.conf"
+    owner: root
+    group: root
+  become: yes
+
+- name: "Disabling Transparent Huge Pages: 5"
+  shell: "tuned-adm profile no-thp"
+  become: yes
+
+- name: "Enable mongodb service"
+  service: name=mongod enabled=yes
+  become: yes
+
+- name: "Start mongodb"
+  service: name=mongod state=started
+  become: yes
+
+- name: "Check mongodb started"
+  wait_for:
+    path: "/var/log/mongodb/mongod.log"
+    search_regex: "waiting for connections on port {{mongo_port}}"
+    timeout: 600
+  become: yes
+
+- name: "Generating configure script for mongo"
+  template:
+      src: "./templates/configure.js.tmpl"
+      dest: "/tmp/configure.js.tmpl"
+
+- name: "Configuring auth"
+  shell: "mongo < /tmp/configure.js.tmpl"
+
+- name: "Generating mongo.conf"
+  template:
+    src: "./templates/mongod.conf"
+    dest: "/etc/mongod.conf"
+    owner: root
+    group: root
+    mode: 0755
+  become: yes
+
+- name: "Create mongodb path"
+  file:
+    path: "{{mongo_db_path}}"
+    state: directory
+    owner: mongod
+    group: mongod
+    mode: 0771
+  become: yes
+
+- name: "restart mongodb service"
+  service: name=mongod state=restarted
+  become: yes
+
+- name: "Fix selinux permissions for /data/mongo"
+  shell: "chcon -R --reference=/var/lib/mongo /data/mongo"
+  become: yes
