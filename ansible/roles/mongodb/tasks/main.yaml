@@ -69,10 +69,10 @@
 - name: "Generating configure script for mongo"
   template:
       src: "./templates/configure.js.tmpl"
-      dest: "/tmp/configure.js.tmpl"
+      dest: "/tmp/configure.js"
 
 - name: "Configuring auth"
-  shell: "mongo < /tmp/configure.js.tmpl"
+  shell: "mongo < /tmp/configure.js"
 
 - name: "Generating mongo.conf"
   template:

@@ -3,3 +3,11 @@ user = db.getUser("{{mongo_admin_user}}")
 if (user == null) {
     db.createUser({ user: "{{mongo_admin_user}}", pwd: "{{mongo_admin_pass}}", roles: [{ role: "userAdminAnyDatabase", db: "admin" }] });
 }
+
+{% for db in mongo_databases %}
+use {{db}};
+user = db.getUser("{{mongo_admin_user}}")
+if (user == null) {
+    db.createUser({ user: "{{mongo_admin_user}}", pwd: "{{mongo_admin_pass}}", roles: [{ role: "dbOwner", db: "{{db}}" }] });
+}
+{% endfor %}
