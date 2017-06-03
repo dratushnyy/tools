@@ -1,0 +1,12 @@
+---
+- name: "Create backup scripts with mongodump"
+  template:
+    src: "mongo_dump.sh"
+    dest: "${HOME}/bin/mongo_dump.sh"
+
+- name: "Create cron job for backup"
+  cron:
+    name: "Database backup"
+    minute: 0
+    hour: 23
+    job: "${HOME}/bin/mongo_dump.sh 2>&1 > {{backup_dir}}/backup.log"
