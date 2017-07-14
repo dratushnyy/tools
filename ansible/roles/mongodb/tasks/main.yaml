@@ -92,10 +92,10 @@
     mode: 0771
   become: yes
 
-- name: "restart mongodb service"
-  service: name=mongod state=restarted
-  become: yes
-
 - name: "Fix selinux permissions for /data/mongo"
   shell: "chcon -R --reference=/var/lib/mongo /data/mongo"
+  become: yes
+
+ - name: "restart mongodb service"
+  service: name=mongod state=restarted
   become: yes
