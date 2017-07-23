@@ -1,0 +1,42 @@
+--- #Playbook for installing go lang on cent os
+- hosts: all
+  tasks:
+    - name: Get go lang distribution
+      get_url:
+        url: https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz
+        dest: /tmp/go1.8.3.linux-amd64.tar.gz
+        checksum: sha256:1862f4c3d3907e59b04a757cfda0ea7aa9ef39274af99a784f5be843c80c6772
+
+    - name: Unpack Go
+      unpack:
+        src: /tmp/go1.8.3.linux-amd64.tar.gz
+        dest: /usr/local
+      become: yes
+
+    - name: Creating dirs
+      file:
+        path: "${HOME}/projects/{item}"
+        state: directory
+      with_items:
+        - bin
+        - pkg
+        - src
+
+    - name: Set environment variables
+      block:
+        - file:
+          path: /etc/profile.d/path.sh
+        - lineinfile:
+            path: /etc/profile.d/path.sh
+            state: present
+            line: 'export PATH=$PATH:/usr/local/go/bin'
+        - lineinfile:
+            path: "${HOME}/.bash_profile"
+            state: present
+            line: 'export GOBIN="$HOME/projects/bin"'
+        - lineinfile:
+            path: "${HOME}/.bash_profile"
+            state: present
+            line: 'export GOPATH="$HOME/projects/src"'
+      become: yes
+

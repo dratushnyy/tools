@@ -1,0 +1,42 @@
+--- #Playbook for deleting ec2 instance, key, sec group
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  tasks:
+    - name: Search instance
+      shell: "aws ec2 describe-instances --filters 'Name=tag:Project,Values={{AWS.INSTANCE_TAG}}'"
+      register: ec2_response
+
+    - set_fact: instance_info="{{ec2_response.stdout | from_json}}"
+
+    - debug:
+        var: item.Instances[0].InstanceId
+      with_items:
+        - "{{instance_info.Reservations}}"
+
+    - name: Terminate instanses
+      shell: "aws ec2 terminate-instances --instance-ids {{item.Instances[0].InstanceId}}"
+      with_items:
+        - "{{instance_info.Reservations}}"
+
+    - name: Delete cloudlfare DNS recod
+      cloudflare_dns:
+        zone: "{{CLOUD_FLARE.ZONE}}"
+        type: A
+        value: "{{PROJECT_NAME}}.{{CLOUD_FLARE.ZONE}}"
+        state: absent
+        account_email: "{{CLOUD_FLARE.ACCOUNT_EMAIL}}"
+        account_api_token: "{{CLOUD_FLARE_API_TOKEN}}"
+
+    - name: Sleep for 5 mins
+      wait_for: timeout=300
+
+    - name: Delete old security gorup
+      shell: 'aws ec2 delete-security-group --group-name {{AWS.SEC_GROUP_NAME}}'
+
+    - name: Delete old ssh key file
+      file: path="{{playbook_dir}}/../keys/{{AWS.SSH_KEY_NAME}}.pem" state=absent
+      ignore_errors: true
+
+    - name: Delete old ssh key on aws
+      shell: "aws ec2 delete-key-pair --key-name {{AWS.SSH_KEY_NAME}}"
