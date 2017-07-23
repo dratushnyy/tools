@@ -2,7 +2,7 @@
 * VM and container provision
 * DB deployment (Cassandra, Mongodb)
 * Useful scripts for OpenStack
-* Scripts for Cisco IMC
+* Scripts for Cisco IMC and Cisco UCSM
 * Language deployment (R, Go)
 * Misc
 
