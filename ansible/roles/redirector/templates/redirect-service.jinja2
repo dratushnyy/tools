@@ -4,11 +4,12 @@ After=network.target
 
 [Service]
 Type=forking
-ExecStart="sudo {{ GOBIN }}/redirect {{ item }} > /var/log/redirects.log 2>&1 &"
+ExecStart=/bin/bash -c "sudo {{ GOBIN }}/redirect {{ item }} > /home/centos/redirects.log 2>&1 &"
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
 Restart=on-failure
 RestartSec=42s
+
 
 
 [Install]

@@ -18,7 +18,10 @@ func redirect(w http.ResponseWriter, r *http.Request) {
             to = fmt.Sprintf("http://%s", to)
         }
     }
-    fmt.Printf("Redirect to '%s'\n", to)
+    to += fmt.Sprintf("%s?%s", to, r.URL.RawQuery)
+    log.Printf("[%s:%s] Redirect to '%s'\n",
+                r.RemoteAddr, r.Header.Get("X-Forwarded-For") ,to)
+
     http.Redirect(w, r, to, 301)
 }
 
