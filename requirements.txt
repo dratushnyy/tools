@@ -4,8 +4,8 @@ ecdsa==0.13
 httplib2==0.9.2
 Jinja2==2.8
 MarkupSafe==0.23
-paramiko==1.16.0
-pycrypto==2.6.1
+paramiko>1.16.0
+pycrypto>2.6.1
 PyYAML==3.11
 six==1.10.0
 wheel==0.24.0
