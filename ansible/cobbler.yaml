@@ -1,7 +1,0 @@
----
-- hosts: cobbler
-  gather_facts: no
-  become: yes
-  roles:
-    - cobbler
-    - cobbler_distros

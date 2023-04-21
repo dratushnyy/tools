@@ -1,2 +1,0 @@
-- name: "Add user"
-  user: name=user password=user home="/home/user/" shell="/bin/bash"

@@ -1,7 +1,0 @@
-.vagrant/
-*.retry
-ansible/hosts
-*.log
-*.pyc
-.venv
-.DS_Store

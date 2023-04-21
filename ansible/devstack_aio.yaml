@@ -1,5 +1,0 @@
----
-- hosts: devstackaio
-  gather_facts: no
-  roles:
-    - devstack_aio
