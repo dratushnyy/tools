@@ -11,8 +11,4 @@ sudo snap install charmcraft --classic
 echo "Installing juju"
 sudo snap install juju --classic
 
-# Bootstrap MicroK8s
-echo "Boostrap juju + m8ks"
-juju bootstrap microk8s micro
-juju add-model development
 
